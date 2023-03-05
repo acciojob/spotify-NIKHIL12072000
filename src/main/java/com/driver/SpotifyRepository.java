@@ -203,6 +203,32 @@ public class SpotifyRepository {
                     }
                     else break;
                 }
+                else{
+                    List<User> userList=new ArrayList<>();
+                    userList.add(user);
+                    songLikeMap.put(song,userList);
+                    if(!songLikeMap.get(song).contains(user)) {
+                        s.setLikes(s.getLikes()+1);
+                        songLikeMap.get(song).add(user);
+                        Album a=null;
+                        for(Album album:albumSongMap.keySet()){
+                            if(albumSongMap.get(album).contains(s)){
+                                a=album;
+                                break;
+                            }
+                        }
+                        Artist art=null;
+                        for(Artist artist:artistAlbumMap.keySet()){
+                            if(artistAlbumMap.get(artist).contains(a)){
+                                art=artist;
+                                break;
+                            }
+                        }
+                        art.setLikes(art.getLikes()+1);
+                        break;
+                    }
+                    else break;
+                }
             }
         }
 
