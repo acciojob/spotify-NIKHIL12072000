@@ -81,11 +81,12 @@ public class SpotifyRepository {
 
 
     public Playlist createPlaylistOnLength(String mobile, String title, int length) throws Exception {
-        User user=null;
+        User user=new User();
+        boolean b=false;
         for(User u:users){
-            if(u.getMobile().equals(mobile)) {user=u; break;}
+            if(u.getMobile().equals(mobile)) {b=true;user=u; break;}
         }
-        if(user==null) throw new Exception("User does not exist");
+        if(!b) throw new Exception("User does not exist");
         Playlist playlist=new Playlist(title);
         playlists.add(playlist);
         List<User> list2=new ArrayList<>();
@@ -115,15 +116,17 @@ public class SpotifyRepository {
     }
 
     public Playlist createPlaylistOnName(String mobile, String title, List<String> songTitles) throws Exception {
-        User user=null;
+        User user=new User();
+        boolean b=false;
         for(User u:users){
-            if(u.getMobile().equals(mobile)) {user=u; break;}
+            if(u.getMobile().equals(mobile)) {b=true;user=u; break;}
         }
-        if(user==null) throw new Exception("User does not exist");
+        if(!b) throw new Exception("User does not exist");
         Playlist playlist=new Playlist(title);
         playlists.add(playlist);
         List<User> list2=new ArrayList<>();
         list2.add(user);
+        creatorPlaylistMap.put(user,playlist);
         playlistListenerMap.put(playlist,list2);
         for(Song song:songs){
             if(songTitles.contains(song.getTitle())){
@@ -133,9 +136,7 @@ public class SpotifyRepository {
                     list.add(song);
                     playlistSongMap.put(playlist,list);
                 }
-                creatorPlaylistMap.put(user,playlist);
-                if(userPlaylistMap.containsKey(user))
-                    userPlaylistMap.get(user).add(playlist);
+                if(userPlaylistMap.containsKey(user)) userPlaylistMap.get(user).add(playlist);
                 else{
                     List<Playlist> list3=new ArrayList<>();
                     list3.add(playlist);
