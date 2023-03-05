@@ -52,7 +52,7 @@ public class SpotifyRepository {
     public Album createAlbum(String title, String artistName) {
         boolean b=false;
         for(Artist a:artists){
-            if(a.getName().equals(artistName)) b=true;
+            if(a.getName().equals(artistName)){ b=true; break;}
         }
         if(!b) createArtist(artistName);
         Album album=new Album(title);
@@ -62,18 +62,25 @@ public class SpotifyRepository {
 
     public Song createSong(String title, String albumName, int length) throws Exception{
         boolean b=false;
+        Album album=new Album();
         for(Album a:albums){
-            if(a.getTitle().equals(albumName)) b=true;
+            if(a.getTitle().equals(albumName)){ album=a;b=true; break;}
         }
         if(!b) throw new Exception("Album does not exist");
         Song song=new Song(title,length);
         songs.add(song);
+        if(albumSongMap.containsKey(album))
+            albumSongMap.get(album).add(song);
+        else{
+            List<Song> list=new ArrayList<>();
+            list.add(song);
+            albumSongMap.put(album,list);
+        }
         return song;
     }
 
 
     public Playlist createPlaylistOnLength(String mobile, String title, int length) throws Exception {
-
         User user=null;
         for(User u:users){
             if(u.getMobile().equals(mobile)) {user=u; break;}
@@ -215,7 +222,7 @@ public class SpotifyRepository {
     }
 
     public String mostPopularArtist() {
-        Artist artist=null;
+        Artist artist=new Artist();
         int max=Integer.MIN_VALUE;
         for(Artist a:artists){
             if(a.getLikes()>max){
@@ -227,7 +234,7 @@ public class SpotifyRepository {
     }
 
     public String mostPopularSong() {
-        Song song=null;
+        Song song=new Song();
         int max=Integer.MIN_VALUE;
         for(Song s:songs){
             if(s.getLikes()>max){
