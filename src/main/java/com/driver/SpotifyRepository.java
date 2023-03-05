@@ -166,7 +166,7 @@ public class SpotifyRepository {
             }
         }
         if(!b1) throw new Exception("User does not exist");
-        Playlist playlist=null;
+        Playlist playlist=new Playlist();
         for(Playlist p:playlists){
             if(p.getTitle().equals(playlistTitle)){
                 playlist=p;
