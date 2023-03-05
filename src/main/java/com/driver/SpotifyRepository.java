@@ -106,7 +106,7 @@ public class SpotifyRepository {
                     playlistSongMap.get(playlist).add(song);
                 }
                 else {
-                    List<Song> list1=new ArrayList<Song>();
+                    List<Song> list1=new ArrayList<>();
                     list1.add(song);
                     playlistSongMap.put(playlist,list1);
                 }
@@ -140,7 +140,7 @@ public class SpotifyRepository {
             if(songTitles.contains(song.getTitle())){
                 if(playlistSongMap.containsKey(playlist)) playlistSongMap.get(playlist).add(song);
                 else {
-                    List<Song> list=new ArrayList<Song>();
+                    List<Song> list=new ArrayList<>();
                     list.add(song);
                     playlistSongMap.put(playlist,list);
                 }
@@ -216,14 +216,15 @@ public class SpotifyRepository {
                     }
                 }
                 //Getting Artist of the Song
-                Artist art=null;
+                Artist art;
                 for(Artist artist:artistAlbumMap.keySet()){
                     if(artistAlbumMap.get(artist).contains(a)){
                         art=artist;
+                        art.setLikes(art.getLikes()+1);
                         break;
                     }
                 }
-                art.setLikes(art.getLikes()+1);
+
             }
         }
         if(s==null) throw new Exception("Song does not exist");
